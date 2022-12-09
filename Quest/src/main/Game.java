@@ -5,32 +5,49 @@ import java.util.Scanner;
 
 
 public class Game implements lGame{
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka jednotka1 = new Jednotka();
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka jednotka2 = new Jednotka();
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka jednotka3 = new Jednotka();
 	int pocet_diamantu = 0;
-	
+
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka nepritel1 = new Jednotka();
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka nepritel2 = new Jednotka();
+	//	TODO 2.2 nemusis si drzat specificke jednotky, mozes si drzat pole jednotiek
+
 	Jednotka nepritel3 = new Jednotka();
 	
 	Random rand = new Random();
 	Scanner keyboard = new Scanner(System.in);
-	
+
+	// TODO 1. toto vie byt vytiahnute do clasy
+
 	int hp_clovek = 500;
 	int hp_clovek_max = 800;
 	int hp_ork = 300;
 	int hp_ork_max = 620;
 	int hp_elf = 280;
 	int hp_elf_max = 525;
-	
+
+	// TODO 1. toto vie byt vytiahnute do clasy
 	int poskozeni_clovek = 15;
 	int poskozeni_clovek_max = 90;
 	int poskozeni_ork = 45;
 	int poskozeni_ork_max = 160;
 	int poskozeni_elf = 35;
 	int poskozeni_elf_max = 150;
-	
+
+
+	// TODO 1. toto vie byt vytiahnute do clasy
 	int rychlost_clovek = 10;
 	int rychlost_clovek_max = 20;
 	int rychlost_ork = 5;
@@ -41,6 +58,7 @@ public class Game implements lGame{
 	int min_xp = 45;
 	int max_xp = 125;
 
+//	TODO 2. nemusis si drzat pole poradi, ale mozes si drzat pole jednotiek
 	String[] poradi = {"prvni", "druhy", "treti"};
 	public static void main(String[] args) {
 		Game g = new Game();
@@ -65,7 +83,8 @@ public class Game implements lGame{
 		
 		
 		//1. JEDNOTKA
-		
+		// TODO 1. toto vie byt vytiahnute do clasy
+
 
 		//RASA
 		int cislo = keyboard.nextInt();
@@ -122,7 +141,8 @@ public class Game implements lGame{
 			}
 		}
 
-		
+		// TODO 1.2 toto vie byt vytiahnute do clasy
+
 		//TYP
 		System.out.println("1) RYTIR   -> Jeho utoky jsou efektivni proti MAG!");
 		System.out.println("2) MAG     -> Jeho utoky jsou efektivni proti RYTIR!");//2x rytir?
@@ -156,9 +176,12 @@ public class Game implements lGame{
 				}
 			}
 		}
+		//	TODO 2. nemusis si drzat pole poradi, ale mozes si drzat pole jednotiek
 		poradi[0] = "prvni";
 
-	//2. JEDNOTKA
+		// TODO 1. toto vie byt vytiahnute do clasy
+
+		//2. JEDNOTKA
 		System.out.println("2. Jednotka:");
 		System.out.println("1) CLOVEK -> velky pocet zivotu, male poskozeniy stredne rychlý!");
 		System.out.println("2) ORK    -> velke poskozeni, stredne zivotuy, pomaly! JEHO UTOKY JSOU EFEKTIVNI PROTI CLOVEK A ELF");
@@ -221,7 +244,8 @@ public class Game implements lGame{
 			}
 		}
 
-		
+		// TODO 1.2 toto vie byt vytiahnute do clasy
+
 		//TYP
 		System.out.println("1) RYTIR   -> Jeho utoky jsou efektivni proti MAG!");
 		System.out.println("2) MAG     -> Jeho utoky jsou efektivni proti RYTIR!");//2x rytir?
@@ -255,9 +279,13 @@ public class Game implements lGame{
 				}
 			}
 		}
-		
+		//	TODO 2. nemusis si drzat pole poradi, ale mozes si drzat pole jednotiek
+
 		poradi[1] = "druhy";
-		
+
+
+		// TODO 1. toto vie byt vytiahnute do clasy
+
 		//3. JEDNOTKA
 		
 		System.out.println("1. Jednotka:");
@@ -322,7 +350,8 @@ public class Game implements lGame{
 			}
 		}
 
-		
+		// TODO 1.2 toto vie byt vytiahnute do clasy
+
 		//TYP
 		System.out.println("1) RYTIR   -> Jeho utoky jsou efektivni proti MAG!");
 		System.out.println("2) MAG     -> Jeho utoky jsou efektivni proti RYTIR!");//2x rytir?
@@ -356,6 +385,8 @@ public class Game implements lGame{
 				}
 			}
 		}
+		//	TODO 2. nemusis si drzat pole poradi, ale mozes si drzat pole jednotiek
+
 		poradi[2] = "treti";
 
 		//VÝPIS ARMÁDY
@@ -380,11 +411,13 @@ public class Game implements lGame{
 		
 		
 	}//konec start
-	
+
 	//*****************************FUNKCE**************************
 	
 	private void volba() {
 		int cislo = keyboard.nextInt();
+
+		//TODO 3. vies si zadefinovat  konstanty namiesto takzvanych "magic numbers", je to viac popisne
 		if (cislo == 1) {
 			inspect();
 			System.out.println("");
@@ -410,7 +443,8 @@ public class Game implements lGame{
 		int i = 0;
 		int n = 1;
 		while(true) {
-			
+			//  TODO 4. namiesto niekolko nasobneho zanorovania vies kombinovat podmienky do jednej
+			// 	TODO teda namiesto if(...){if(...){}} vies urobit if(... && ...){}
 			if(jednotka1.zivoty<=0) {
 				if (jednotka2.zivoty <=0) {
 					if(jednotka3.zivoty <= 0) {
@@ -425,6 +459,7 @@ public class Game implements lGame{
 			}
 				
 			System.out.println(n+".KOLO");
+			// TODO 5. tunak by ti pomohlo mat zoznam/pole jednotiek, kedy by si vypisoval zivoty kazdej jednotky zo zoznamu, namiesto vypisovania kazdej jednotky ktoru mas ako atribut
 			System.out.println(jednotka1.zivoty);
 			System.out.println(jednotka2.zivoty);
 			System.out.println(jednotka3.zivoty);
@@ -436,6 +471,7 @@ public class Game implements lGame{
 				if(jednotka1.zivoty >0) {
 					if(nepritel1.zivoty > 0) {//zivy 1nepratel
 						//ODSUD KOPÍROVAT
+						// TODO 6. ziadne ze odtialto kopirovat :DDDD, ak musis kod koprovat, mozes ho extrahovat do samostatnej funkcie/metody
 						if(jednotka1.rychlost > nepritel1.rychlost) {
 							//1EFEKTIVNI UTOK NASI JEDNOTKY
 							if(jednotka1.typ == "RYTIR" && nepritel1.typ == "MAG") {
@@ -2195,7 +2231,9 @@ public class Game implements lGame{
 	            keyboard.nextLine();
 	        }  
 	        catch(Exception e)
-	        {}  
+	        {
+						// TOTO je antipattern
+					}  
 	 }
 	
 	private void konec() {
