@@ -10,6 +10,28 @@ public class Game implements lGame{
 	Jednotka[] Jednotky = new Jednotka[3];
 	Jednotka[] Nepratele = new Jednotka[3];
 	
+	final int CLOVEK = 0;
+	final int ORK = 1;
+	final int ELF = 2;
+	
+	final int RYTIR = 1;
+	final int MAG = 2;
+	final int STRELEC = 3;
+	
+	final int INSPECT = 1;
+	final int FIGHT = 2;
+	final int INFO = 3;
+	final int REORDER = 4;
+	final int KONEC = 5;
+	
+	int indexJednotky = 0;
+	int indexNepritele = 0;
+	
+	int pocetKol = 0;
+	
+	boolean provedenUtokJednotky = false;
+	boolean provedenUtokNepritele = false;
+	
 	Random rand = new Random();
 	Scanner keyboard = new Scanner(System.in);
 
@@ -48,12 +70,10 @@ public class Game implements lGame{
 			menu();
 			volba();
 		}
-		
+	
 		System.out.println("GRATULUJI, POVEDLO SE TI NASBIRAT VSECH 7 CASTI DIAMANTU!");
 		System.out.println("******************************* VYHRAAAAAAAAAAAL JSIIIIIIIIIIIIIII!!!!! *******************************");
-		
-		
-	}//konec start
+	}
 
 	//*****************************FUNKCE**************************
 	
@@ -64,33 +84,30 @@ public class Game implements lGame{
 			System.out.println("1) CLOVEK -> velky pocet zivotu, male poskozeni, stredne rychly!");
 			System.out.println("2) ORK    -> velke poskozeni, stredne zivotuy, pomaly! JEHO UTOKY JSOU EFEKTIVNI PROTI CLOVEK A ELF");
 			System.out.println("3) ELF    -> rychla jednotka, stredni poskozeni, malo zivotu! JEHO UTOKY JSOU EFEKTIVNI PROTI CLOVEK");
+			System.out.print("> ");
 			int cislo = keyboard.nextInt();
-
-
-			// TODO
-			if (cislo == 1) {
-				// TODO opat tu pouzivas magicke cisla, idealne si tieto konstanty pomenovat ako metode volba
+			if (cislo == (CLOVEK+1)) {
 				System.out.println("Zvolen CLOVEK!");
 				Jednotky[i] = new Clovek();
-			} else if (cislo == 2) {
+			} else if (cislo == (ORK+1)) {
 				System.out.println("Zvolen ORK!");
 				Jednotky[i] = new Ork();
-			} else if (cislo == 3) {
+			} else if (cislo == (ELF+1)) {
 				System.out.println("Zvolen ELF!");
 				Jednotky[i] = new Elf();
 			} else {
 				while(true) {
 					System.out.println("ZADAL SI SPATNY PRIKAZ, ZKUS TO ZNOVU!");
 					cislo = keyboard.nextInt();
-					if (cislo == 1) {
+					if (cislo ==(CLOVEK+1)) {
 						System.out.println("Zvolen CLOVEK!");
 						Jednotky[i] = new Clovek();
 						break;
-					} else if (cislo == 2) {
+					} else if (cislo == (ORK+1)) {
 						System.out.println("Zvolen ORK!");
 						Jednotky[i] = new Ork();
 						break;
-					} else if (cislo == 3) {
+					} else if (cislo == (ELF+1)) {
 						System.out.println("Zvolen ELF!");
 						Jednotky[i] = new Elf();
 						break;
@@ -103,30 +120,30 @@ public class Game implements lGame{
 			System.out.println("1) RYTIR   -> Jeho utoky jsou efektivni proti MAG!");
 			System.out.println("2) MAG     -> Jeho utoky jsou efektivni proti RYTIR!");
 			System.out.println("3) STRELEC -> Jeho utoky jsou efektivni proti RYTIR!");
+			System.out.print("> ");
 			cislo = keyboard.nextInt();
-			// TODO opat tu pouzivas magicke cisla, idealne si tieto konstanty pomenovat ako metode volba
-			if (cislo == 1) {
+			if (cislo == RYTIR) {
 				Jednotky[i].typ = "RYTIR";
 				System.out.println("Zvolen RYTIR! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
-			} else if (cislo == 2) {
+			} else if (cislo == MAG) {
 				Jednotky[i].typ = "MAG";
 				System.out.println("Zvolen MAG! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
-			} else if (cislo == 3) {
+			} else if (cislo == STRELEC) {
 				Jednotky[i].typ = "STRELEC";
 				System.out.println("Zvolen STRELEC! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
 			} else {
 				while(true) {
 					System.out.println("ZADAL SI SPATNY PRIKAZ, ZKUS TO ZNOVU!");
 					cislo = keyboard.nextInt();
-					if (cislo == 1) {
+					if (cislo == RYTIR) {
 						Jednotky[i].typ = "RYTIR";
 						System.out.println("Zvolen RYTIR! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
 						break;
-					} else if (cislo == 2) {
+					} else if (cislo == MAG) {
 						Jednotky[i].typ = "MAG";
 						System.out.println("Zvolen MAG! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
 						break;
-					} else if (cislo == 3) {
+					} else if (cislo == STRELEC) {
 						Jednotky[i].typ = "STRELEC";
 						System.out.println("Zvolen STRELEC! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
 						break;
@@ -138,19 +155,13 @@ public class Game implements lGame{
 	
 	private void volba() {
 		int cislo = keyboard.nextInt();
-		// TODO tieto konstanty si mozes vytiahnut na class level, ako atributy, aby si ich mohol znova niekde inde pouzivat
-		final int INSPECT = 1;
-		final int FIGHT = 2;
-		final int INFO = 3;
-		final int REORDER = 4;
-		final int KONEC = 5;
 		if (cislo == INSPECT) {
 			inspect();
 			System.out.println("");
 			menu();
 			volba();
 		} else if (cislo==FIGHT) {
-			//fight();
+			fight();
 		} else if (cislo == INFO) {
 			info();
 		} else if(cislo == REORDER) {
@@ -164,1417 +175,98 @@ public class Game implements lGame{
 		}
 	}
 	
-	/*
 	private void fight() {
-		int i = 0;
-		int n = 1;
+		indexJednotky = 0;
+		indexNepritele = 0;
+		pocetKol=0;
 		while(true) {
-			//  TODO 4. namiesto niekolko nasobneho zanorovania vies kombinovat podmienky do jednej
-			// 	TODO teda namiesto if(...){if(...){}} vies urobit if(... && ...){}
-			if(jednotka1.zivoty<=0 && jednotka2.zivoty <= 0 && jednotka3.zivoty <= 0) {
-				System.out.println("PROHRAL JSI!");
-				Jednotky[0].zisk_xp(2);
-				System.out.println("");
-				System.out.println("TVE JEDNOTKY SI MUSI ODPOCINOUT!");
-				System.out.println("");
+			System.out.println(Jednotky[indexJednotky].zivoty);
+			System.out.println(Nepratele[indexNepritele].zivoty);
+			boolean provedenUtokJednoky = false;
+			boolean provedenUtokNepritele = false;
+			System.out.println(pocetKol+". KOLO");
+			if(Jednotky[0].zivoty<=0 && Jednotky[1].zivoty<=0 && Jednotky[2].zivoty<=0) {
+				System.out.println("Vase jednotka je mrtva!");
+				System.out.println("PROHRAL JSI! TVE JEDNOTKY SI MUSI ODPOCINOUT!");
+				for(int i=0;i<3;i++) {
+					Jednotky[i].zisk_xp(2);
+					Jednotky[i].vylecit();
+				}
+				break;
+			} else if (Nepratele[0].zivoty<=0 && Nepratele[1].zivoty<=0 && Nepratele[2].zivoty<=0) {
+				System.out.println("Nepritel je zabit!");
+				System.out.println("PORAZIL SI VSECHNY NEPRATELE! ZDE JE TVA CAST DIAMANTU!");
+				for(int i=0;i<3;i++) {
+					Jednotky[i].zisk_xp(1);
+					Jednotky[i].vylecit();
+				}
+				pocet_diamantu++;
 				break;
 			}
-				
-			System.out.println(n+".KOLO");
-			// TODO 5. tunak by ti pomohlo mat zoznam/pole jednotiek, kedy by si vypisoval zivoty kazdej jednotky zo zoznamu, namiesto vypisovania kazdej jednotky ktoru mas ako atribut
-
-			if (poradi[i] == "prvni" && jednotka1.zivoty >0 && nepritel1.zivoty > 0) {
-					//zivy 1nepratel
-						//ODSUD KOPÍROVAT
-						// TODO 6. ziadne ze odtialto kopirovat :DDDD, ak musis kod koprovat, mozes ho extrahovat do samostatnej funkcie/metody
-						if(jednotka1.rychlost > nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NASI JEDNOTKY
-							if((jednotka1.typ == "RYTIR" && nepritel1.typ == "MAG") ||(jednotka1.typ == "STRELEC" && nepritel1.typ == "RYTIR") || (jednotka1.typ == "MAG" && nepritel1.typ == "RYTIR")) {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if((nepritel1.typ == "RYTIR" && jednotka1.typ == "MAG") ||(nepritel1.typ == "STRELEC" && jednotka1.typ == "RYTIR") || (nepritel1.typ == "MAG" && jednotka1.typ == "RYTIR")) {
-										jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel1.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka1.zivoty = jednotka1.zivoty - nepritel1.poskozeni ;
-									}
-
-							//UTOK NEPRATELE
-						}else if(jednotka1.rychlost<nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-							if((nepritel1.typ == "RYTIR" && jednotka1.typ == "MAG") ||(nepritel1.typ == "STRELEC" && jednotka1.typ == "RYTIR") || (nepritel1.typ == "MAG" && jednotka1.typ == "RYTIR")) {
-								jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka1.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if((jednotka1.typ == "RYTIR" && nepritel1.typ == "MAG") ||(jednotka1.typ == "STRELEC" && nepritel1.typ == "RYTIR") || (jednotka1.typ == "MAG" && nepritel1.typ == "RYTIR")) {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka1.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka1.poskozeni ;
-									}
-								}
-							}
-						}
-					
-					
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-						//PODSUD KOPIROVAT
-					}else if(nepritel1.zivoty <= 0) {//mrtvy 1nepratel 
-						if(nepritel2.zivoty > 0) {//zivy 2nepratel
-							//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-							if(jednotka1.rychlost > nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NASI JEDNOTKY
-								if(jednotka1.typ == "RYTIR" && nepritel2.typ == "MAG") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka1.typ == "MAG") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka1.zivoty = jednotka1.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka1.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka1.typ == "MAG") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka1.zivoty = jednotka1.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka1.typ == "MAG" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka1.typ == "MAG") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka1.zivoty = jednotka1.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NASI JEDNOTKY
-									nepritel2.zivoty = nepritel2.zivoty - jednotka1.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka1.typ == "MAG") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka1.typ == "RYTIR") {
-											jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka1.zivoty = jednotka1.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}
-								
-								
-								
-								//UTOK NEPRATELE
-							}else if(jednotka1.rychlost<nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-								if(nepritel2.typ == "RYTIR" && jednotka1.typ == "MAG") {
-									jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka1.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										}else if(jednotka1.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else if(jednotka1.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka1.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-									jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka1.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										}else if(jednotka1.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else if(jednotka1.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka1.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "MAG" && jednotka1.typ == "RYTIR") {
-									jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka1.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										}else if(jednotka1.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else if(jednotka1.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka1.poskozeni ;
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-									jednotka1.zivoty = jednotka1.zivoty - nepritel2.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka1.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										}else if(jednotka1.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else if(jednotka1.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka1.poskozeni ;
-										}
-									}
-								}
-							}
-						}else if(nepritel2.zivoty <=0) {//mrtvy 2neprtatel
-							if(nepritel3.zivoty > 0) {//zivy 3nepratel
-								//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-								if(jednotka1.rychlost > nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NASI JEDNOTKY
-									if(jednotka1.typ == "RYTIR" && nepritel3.typ == "MAG") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka1.typ == "MAG") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka1.zivoty = jednotka1.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka1.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka1.typ == "MAG") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka1.zivoty = jednotka1.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka1.typ == "MAG" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka1.typ == "MAG") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka1.zivoty = jednotka1.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NASI JEDNOTKY
-										nepritel3.zivoty = nepritel3.zivoty - jednotka1.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka1.typ == "MAG") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka1.typ == "RYTIR") {
-												jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka1.zivoty = jednotka1.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}
-									
-									
-									
-									//UTOK NEPRATELE
-								}else if(jednotka1.rychlost<nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-									if(nepritel3.typ == "RYTIR" && jednotka1.typ == "MAG") {
-										jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka1.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											}else if(jednotka1.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else if(jednotka1.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka1.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "STRELEC" && jednotka1.typ == "RYTIR") {
-										jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka1.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											}else if(jednotka1.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else if(jednotka1.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka1.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "MAG" && jednotka1.typ == "RYTIR") {
-										jednotka1.zivoty = jednotka1.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka1.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											}else if(jednotka1.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else if(jednotka1.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka1.poskozeni ;
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-										jednotka1.zivoty = jednotka1.zivoty - nepritel3.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka1.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka1.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											}else if(jednotka1.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else if(jednotka1.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka1.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka1.poskozeni ;
-											}
-										}
-									}
-								}
-							}else if(nepritel3.zivoty <= 0) {//mrtvy 3nepratel
-								System.out.println("VYBORNE, ZABL JSI VSECHNY NEPRATELE! ZDE JE TVA CAST DIAMANTU!");//VYHRA
-								pocet_diamantu++;
-								vyhra_zisk_zk();
-								break;
-							}
-						}
-					}
-				}else if (jednotka1.zivoty<=0) {
-					System.out.println("VASE " +(i+1)+". JEDNOTKA JE MRTVA!");
-					i++;
+			if(Jednotky[indexJednotky].rychlost>= Nepratele[indexNepritele].rychlost) {
+				efektivniUtokJednotky(indexJednotky, indexNepritele);
+				if(provedenUtokJednotky == false) {
+					normalniUtokJednotky(indexJednotky, indexNepritele);
 				}
-			}else if(poradi[i] == "druhy") {
-				if(jednotka2.zivoty >0) {
-					if(nepritel1.zivoty > 0) {//zivy 1nepratel
-						//ODSUD KOPÍROVAT
-						if(jednotka2.rychlost > nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NASI JEDNOTKY
-							if(jednotka2.typ == "RYTIR" && nepritel1.typ == "MAG") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka2.typ == "MAG") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka2.zivoty = jednotka2.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else if(jednotka2.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka2.typ == "MAG") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka2.zivoty = jednotka2.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else if(jednotka2.typ == "MAG" && nepritel1.typ == "RYTIR") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka2.typ == "MAG") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka2.zivoty = jednotka2.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else {
-								//1NORMALNI UTOK NASI JEDNOTKY
-								nepritel1.zivoty = nepritel1.zivoty - jednotka2.poskozeni;
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka2.typ == "MAG") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka2.zivoty = jednotka2.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}
-							
-							
-							
-							//UTOK NEPRATELE
-						}else if(jednotka2.rychlost<nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-							if(nepritel1.typ == "RYTIR" && jednotka2.typ == "MAG") {
-								jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka2.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									}else if(jednotka2.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else if(jednotka2.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka2.poskozeni ;
-									}
-								}
-							}else if(nepritel1.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-								jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka2.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									}else if(jednotka2.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else if(jednotka2.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka2.poskozeni ;
-									}
-								}
-							}else if(nepritel1.typ == "MAG" && jednotka2.typ == "RYTIR") {
-								jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka2.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									}else if(jednotka2.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else if(jednotka2.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka2.poskozeni ;
-									}
-								}
-							}else {
-								//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-								jednotka2.zivoty = jednotka2.zivoty - nepritel1.poskozeni;
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka2.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									}else if(jednotka2.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else if(jednotka2.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka2.poskozeni ;
-									}
-								}
-							}
-						}
-					
-					
-						//PODSUD KOPIROVAT
-					}else if(nepritel1.zivoty <= 0) {//mrtvy 1nepratel 
-						if(nepritel2.zivoty > 0) {//zivy 2nepratel
-							//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-							if(jednotka2.rychlost > nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NASI JEDNOTKY
-								if(jednotka2.typ == "RYTIR" && nepritel2.typ == "MAG") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka2.typ == "MAG") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka2.zivoty = jednotka2.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka2.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka2.typ == "MAG") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka2.zivoty = jednotka2.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka2.typ == "MAG" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka2.typ == "MAG") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka2.zivoty = jednotka2.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NASI JEDNOTKY
-									nepritel2.zivoty = nepritel2.zivoty - jednotka2.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka2.typ == "MAG") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka2.typ == "RYTIR") {
-											jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka2.zivoty = jednotka2.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}
-								
-								
-								
-								//UTOK NEPRATELE
-							}else if(jednotka2.rychlost<nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-								if(nepritel2.typ == "RYTIR" && jednotka2.typ == "MAG") {
-									jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										}else if(jednotka2.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else if(jednotka2.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka2.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-									jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										}else if(jednotka2.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else if(jednotka2.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka2.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "MAG" && jednotka2.typ == "RYTIR") {
-									jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										}else if(jednotka2.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else if(jednotka2.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka2.poskozeni ;
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-									jednotka2.zivoty = jednotka2.zivoty - nepritel2.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka2.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										}else if(jednotka2.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else if(jednotka2.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka2.poskozeni ;
-										}
-									}
-								}
-							}
-						}else if(nepritel2.zivoty <=0) {//mrtvy 2neprtatel
-							if(nepritel3.zivoty > 0) {//zivy 3nepratel
-								//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-								if(jednotka2.rychlost > nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NASI JEDNOTKY
-									if(jednotka2.typ == "RYTIR" && nepritel3.typ == "MAG") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka2.typ == "MAG") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka2.zivoty = jednotka2.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka2.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka2.typ == "MAG") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka2.zivoty = jednotka2.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka2.typ == "MAG" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka2.typ == "MAG") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka2.zivoty = jednotka2.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NASI JEDNOTKY
-										nepritel3.zivoty = nepritel3.zivoty - jednotka2.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka2.typ == "MAG") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka2.typ == "RYTIR") {
-												jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka2.zivoty = jednotka2.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}
-									
-									
-									
-									//UTOK NEPRATELE
-								}else if(jednotka2.rychlost<nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-									if(nepritel3.typ == "RYTIR" && jednotka2.typ == "MAG") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka2.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											}else if(jednotka2.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else if(jednotka2.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka2.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "STRELEC" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka2.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = jednotka2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											}else if(jednotka2.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else if(jednotka2.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka2.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "MAG" && jednotka2.typ == "RYTIR") {
-										jednotka2.zivoty = jednotka2.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka2.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											}else if(jednotka2.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else if(jednotka2.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka2.poskozeni ;
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-										jednotka2.zivoty = jednotka2.zivoty - nepritel3.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka2.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka2.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											}else if(jednotka2.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = jednotka2.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else if(jednotka2.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka2.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka2.poskozeni ;
-											}
-										}
-									}
-								}
-							}else if(nepritel3.zivoty <= 0) {//mrtvy 3nepratel
-								System.out.println("VYBORNE, ZABL JSI VSECHNY NEPRATELE! ZDE JE TVA CAST DIAMANTU!");//VYHRA
-								pocet_diamantu++;
-								vyhra_zisk_zk();
-								break;
-							}
-						}
-					}
-				}else if (jednotka2.zivoty<=0) {
-					System.out.println("VASE " +(i+1)+". JEDNOTKA JE MRTVA!");
-					i++;
+				kontrolaHpNepritele(indexNepritele);
+				efektivniUtokNepritele(indexNepritele, indexJednotky);
+				if(provedenUtokNepritele == false) {
+					normalniUtokNepritele(indexNepritele, indexJednotky);
 				}
-			}else if(poradi[i] == "treti") {
-				if(jednotka3.zivoty >0) {
-					if(nepritel1.zivoty > 0) {//zivy 1nepratel
-						//ODSUD KOPÍROVAT
-						if(jednotka3.rychlost > nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NASI JEDNOTKY
-							if(jednotka3.typ == "RYTIR" && nepritel1.typ == "MAG") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka3.typ == "MAG") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka3.zivoty = jednotka3.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else if(jednotka3.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka3.typ == "MAG") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka3.zivoty = jednotka3.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else if(jednotka3.typ == "MAG" && nepritel1.typ == "RYTIR") {
-								nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka3.typ == "MAG") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka3.zivoty = jednotka3.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}else {
-								//1NORMALNI UTOK NASI JEDNOTKY
-								nepritel1.zivoty = nepritel1.zivoty - jednotka3.poskozeni;
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-								if(nepritel1.zivoty > 0) {
-									//EFEKTIVNI UTOK NEPRITELE
-									if(nepritel1.typ == "RYTIR" && jednotka3.typ == "MAG") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									}else if(nepritel1.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else if(nepritel1.typ == "MAG" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-										
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										jednotka3.zivoty = jednotka3.zivoty - nepritel1.poskozeni ;
-										
-									}
-								}
-							}
-							
-							
-							
-							//UTOK NEPRATELE
-						}else if(jednotka3.rychlost<nepritel1.rychlost) {
-							//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-							if(nepritel1.typ == "RYTIR" && jednotka3.typ == "MAG") {
-								jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka3.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									}else if(jednotka3.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else if(jednotka3.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka3.poskozeni ;
-									}
-								}
-							}else if(nepritel1.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-								jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka3.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									}else if(jednotka3.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else if(jednotka3.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka3.poskozeni ;
-									}
-								}
-							}else if(nepritel1.typ == "MAG" && jednotka3.typ == "RYTIR") {
-								jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel1.poskozeni * 1.3);
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka3.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									}else if(jednotka3.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else if(jednotka3.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka3.poskozeni ;
-									}
-								}
-							}else {
-								//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-								jednotka3.zivoty = jednotka3.zivoty - nepritel1.poskozeni;
-								//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-								if(jednotka3.zivoty > 0) {
-									//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.typ == "RYTIR" && nepritel1.typ == "MAG") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									}else if(jednotka3.typ == "STRELEC" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else if(jednotka3.typ == "MAG" && nepritel1.typ == "RYTIR") {
-										nepritel1.zivoty = nepritel1.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									} else {
-										//NORMALNI UTOK NEPRITELE
-										nepritel1.zivoty = nepritel1.zivoty - jednotka3.poskozeni ;
-									}
-								}
-							}
-						}
-					
-					
-						//PODSUD KOPIROVAT
-					}else if(nepritel1.zivoty <= 0) {//mrtvy 1nepratel 
-						if(nepritel2.zivoty > 0) {//zivy 2nepratel
-							//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-							if(jednotka3.rychlost > nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NASI JEDNOTKY
-								if(jednotka3.typ == "RYTIR" && nepritel2.typ == "MAG") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka3.typ == "MAG") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka3.zivoty = jednotka3.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka3.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka3.typ == "MAG") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka3.zivoty = jednotka3.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else if(jednotka3.typ == "MAG" && nepritel2.typ == "RYTIR") {
-									nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka3.typ == "MAG") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka3.zivoty = jednotka3.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NASI JEDNOTKY
-									nepritel2.zivoty = nepritel2.zivoty - jednotka3.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-									if(nepritel2.zivoty > 0) {
-										//EFEKTIVNI UTOK NEPRITELE
-										if(nepritel2.typ == "RYTIR" && jednotka3.typ == "MAG") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										}else if(nepritel2.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else if(nepritel2.typ == "MAG" && jednotka3.typ == "RYTIR") {
-											jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-											
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											jednotka3.zivoty = jednotka3.zivoty - nepritel2.poskozeni ;
-											
-										}
-									}
-								}
-								
-								
-								
-								//UTOK NEPRATELE
-							}else if(jednotka3.rychlost<nepritel2.rychlost) {
-								//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-								if(nepritel2.typ == "RYTIR" && jednotka3.typ == "MAG") {
-									jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										}else if(jednotka3.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else if(jednotka3.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka3.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-									jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										}else if(jednotka3.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else if(jednotka3.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka3.poskozeni ;
-										}
-									}
-								}else if(nepritel2.typ == "MAG" && jednotka3.typ == "RYTIR") {
-									jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel2.poskozeni * 1.3);
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										}else if(jednotka3.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else if(jednotka3.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka3.poskozeni ;
-										}
-									}
-								}else {
-									//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-									jednotka3.zivoty = jednotka3.zivoty - nepritel2.poskozeni;
-									//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-									if(jednotka3.zivoty > 0) {
-										//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.typ == "RYTIR" && nepritel2.typ == "MAG") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										}else if(jednotka3.typ == "STRELEC" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else if(jednotka3.typ == "MAG" && nepritel2.typ == "RYTIR") {
-											nepritel2.zivoty = nepritel2.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										} else {
-											//NORMALNI UTOK NEPRITELE
-											nepritel2.zivoty = nepritel2.zivoty - jednotka3.poskozeni ;
-										}
-									}
-								}
-							}
-						}else if(nepritel2.zivoty <=0) {//mrtvy 2neprtatel
-							if(nepritel3.zivoty > 0) {//zivy 3nepratel
-								//ZDE NAKOPIROVAT PREDCHOZI TEXT*
-								if(jednotka3.rychlost > nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NASI JEDNOTKY
-									if(jednotka3.typ == "RYTIR" && nepritel3.typ == "MAG") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka3.typ == "MAG") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka3.zivoty = jednotka3.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka3.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka3.typ == "MAG") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka3.zivoty = jednotka3.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else if(jednotka3.typ == "MAG" && nepritel3.typ == "RYTIR") {
-										nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka3.typ == "MAG") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka3.zivoty = jednotka3.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NASI JEDNOTKY
-										nepritel3.zivoty = nepritel3.zivoty - jednotka3.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK NEPRATELE
-										if(nepritel3.zivoty > 0) {
-											//EFEKTIVNI UTOK NEPRITELE
-											if(nepritel3.typ == "RYTIR" && jednotka3.typ == "MAG") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											}else if(nepritel3.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else if(nepritel3.typ == "MAG" && jednotka3.typ == "RYTIR") {
-												jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-												
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												jednotka3.zivoty = jednotka3.zivoty - nepritel3.poskozeni ;
-												
-											}
-										}
-									}
-									
-									
-									
-									//UTOK NEPRATELE
-								}else if(jednotka3.rychlost<nepritel3.rychlost) {
-									//1EFEKTIVNI UTOK NEPRATELSKE JEDNOTKY
-									if(nepritel3.typ == "RYTIR" && jednotka3.typ == "MAG") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka3.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											}else if(jednotka3.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else if(jednotka3.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka3.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "STRELEC" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka3.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											}else if(jednotka3.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else if(jednotka3.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka3.poskozeni ;
-											}
-										}
-									}else if(nepritel3.typ == "MAG" && jednotka3.typ == "RYTIR") {
-										jednotka3.zivoty = jednotka3.zivoty - (int) (nepritel3.poskozeni * 1.3);
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka3.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											}else if(jednotka3.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else if(jednotka3.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka3.poskozeni ;
-											}
-										}
-									}else {
-										//1NORMALNI UTOK NEPRATESKE JEDNOTKY
-										jednotka3.zivoty = jednotka3.zivoty - nepritel3.poskozeni;
-										//KONTROLA PO 1. UTOKU A NASLEDNY UTOK PRATELSKE JEDNOTKY
-										if(jednotka3.zivoty > 0) {
-											//EFEKTIVNI UTOK PRATELSKE JEDNOTKY
-											if(jednotka3.typ == "RYTIR" && nepritel3.typ == "MAG") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											}else if(jednotka3.typ == "STRELEC" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else if(jednotka3.typ == "MAG" && nepritel3.typ == "RYTIR") {
-												nepritel3.zivoty = nepritel3.zivoty - (int) (jednotka3.poskozeni * 1.3);
-											} else {
-												//NORMALNI UTOK NEPRITELE
-												nepritel3.zivoty = nepritel3.zivoty - jednotka3.poskozeni ;
-											}
-										}
-									}
-								}
-							}else if(nepritel3.zivoty <= 0) {//mrtvy 3nepratel
-								System.out.println("VYBORNE, ZABL JSI VSECHNY NEPRATELE! ZDE JE TVA CAST DIAMANTU!");//VYHRA
-								pocet_diamantu++;
-								vyhra_zisk_zk();
-								break;
-							}
-						}
-					}
-				}else if (jednotka3.zivoty<=0) {
-					System.out.println("VASE " +(i+1)+". JEDNOTKA JE MRTVA!");
-					i++;
+				kontrolaHpJednotky(indexJednotky);
+			} else {
+				efektivniUtokNepritele(indexNepritele, indexJednotky);
+				if(provedenUtokNepritele == false) {
+					normalniUtokNepritele(indexNepritele, indexJednotky);
 				}
+				kontrolaHpJednotky(indexJednotky);
+				efektivniUtokJednotky(indexJednotky, indexNepritele);
+				if(provedenUtokJednotky == false) {
+					normalniUtokJednotky(indexJednotky, indexNepritele);
+				}
+				kontrolaHpNepritele(indexNepritele);
 			}
-			n++;
-			
-		}//konec while
-		
-		jednotka1.zivoty = jednotka1.max_zivoty;
-		jednotka2.zivoty = jednotka2.max_zivoty;
-		jednotka3.zivoty = jednotka3.max_zivoty;
+			pocetKol++;
+		}
 	}
-*/
 
 
+	private void efektivniUtokJednotky(int x, int y) {
+		if((Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="ELF") || (Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="CLOVEK") || (Jednotky[x].rasa == "ELF" && Nepratele[y].rasa=="CLOVEK") || (Jednotky[x].typ == "RYTIR" && Nepratele[y].typ=="MAG")|| (Jednotky[x].typ == "STRELEC" && Nepratele[y].typ=="RYTIR")|| (Jednotky[x].typ == "MAG" && Nepratele[y].typ=="RYTIR")) {
+			Nepratele[y].zivoty = (int) (Nepratele[y].zivoty - (Jednotky[x].poskozeni * 1.3));
+			provedenUtokJednotky = true;
+		}
+	}
 	
-
-
-
+	private void normalniUtokJednotky(int x, int y) {
+		Nepratele[y].zivoty = Nepratele[y].zivoty - Jednotky[x].poskozeni;
+	}
 	
+	private void efektivniUtokNepritele(int x, int y) {
+		if((Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="ELF") || (Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="CLOVEK") || (Nepratele[x].rasa == "ELF" && Jednotky[y].rasa=="CLOVEK") || (Nepratele[x].typ == "RYTIR" && Jednotky[y].typ=="MAG")|| (Nepratele[x].typ == "STRELEC" && Jednotky[y].typ=="RYTIR")|| (Nepratele[x].typ == "MAG" && Jednotky[y].typ=="RYTIR")) {
+			Jednotky[y].zivoty = (int) (Jednotky[y].zivoty - (Nepratele[x].poskozeni * 1.3));
+			provedenUtokNepritele = true;
+		}
+	}
 
+	private void normalniUtokNepritele(int x, int y) {
+		Jednotky[y].zivoty = Jednotky[y].zivoty - Nepratele[x].poskozeni;
+	}
 
+	private void kontrolaHpJednotky(int x) {
+		if(Jednotky[x].zivoty <= 0 && x <=1 ) {
+			indexJednotky++;
+			System.out.println("Vase jednotka je mrtva!");
+		}
+	}
+	
+	private void kontrolaHpNepritele(int x) {
+		if(Nepratele[x].zivoty <= 0 && x <=1 ) {
+			indexNepritele++;
+			System.out.println("Nepritel je zabit!");
+		}
+	}
+	
 
 	private void reorder() {
 		info();
@@ -1600,64 +292,32 @@ public class Game implements lGame{
 	}
 
 
-
 	private void inspect() {
-		System.out.println("1. "+ Nepratele[0].rasa + " " +Nepratele[0].typ + "| Zivoty: " + Nepratele[0].zivoty + " Poskozeni: " + Nepratele[0].poskozeni + " Rychlost: " + Nepratele[0].rychlost);
-		System.out.println("2. "+ Nepratele[1].rasa + " " +Nepratele[1].typ + "| Zivoty: " + Nepratele[1].zivoty + " Poskozeni: " + Nepratele[1].poskozeni + " Rychlost: " + Nepratele[1].rychlost);
-		System.out.println("3. "+ Nepratele[2].rasa + " " +Nepratele[2].typ +" | Zivoty: " + Nepratele[2].zivoty + " Poskozeni: " + Nepratele[2].poskozeni + " Rychlost: " + Nepratele[2].rychlost);
+		for(int i=0;i<3;i++) {
+			System.out.println((i+1)+". "+ Nepratele[i].rasa + " " +Nepratele[i].typ + "| Zivoty: " + Nepratele[i].zivoty + " Poskozeni: " + Nepratele[i].poskozeni + " Rychlost: " + Nepratele[i].rychlost);
+		}
 	}
 
 
-	
-	
 	private void vytvoreni_nepratel() {
 		for(int i =0;i<3;i++) {
-		int rnd = rand.nextInt(9);
-//		TODO namiesto jedneho cisla ktore reprezentuje typ a rasu na tomto mieste, si mozes napriklad vygenerovat dve cisla
-			// Prve by reprzentovalo rasu, druhe typ (rytir, mag, strelec). Druhe cislo by si dal ako argument metode .rnd_clovek(typ)
-			// A ona by uz vyvtorila cloveka so spravnym typom. usetris si tym tri dost if statementov
-			// Taktiez mozes namiesto if pouzit switch, ale to je len drobnost
-			if (rnd == 0) {
+		int rnd = rand.nextInt(3);
+			if (rnd == CLOVEK) {
 				Nepratele[i] = new Clovek();
-				Nepratele[i].typ = "RYTIR";
+				Nepratele[i].rnd_typ();
 				Nepratele[i].rnd_clovek();
-			}else if (rnd == 1) {
-				Nepratele[i] = new Clovek();
-				Nepratele[i].typ = "MAG";
-				Nepratele[i].rnd_clovek();
-			}else if (rnd == 2) {
-				Nepratele[i] = new Clovek();
-				Nepratele[i].typ = "STRELEC";
-				Nepratele[i].rnd_clovek();
-			}else if (rnd == 3) {
+			}else if (rnd == ORK) {
 				Nepratele[i] = new Ork();
-				Nepratele[i].typ = "RYTIR";
+				Nepratele[i].rnd_typ();
 				Nepratele[i].rnd_ork();
-			}else if (rnd == 4) {
-				Nepratele[i] = new Ork();
-				Nepratele[i].typ = "MAG";
-				Nepratele[i].rnd_ork();
-			}else if (rnd == 5) {
-				Nepratele[i] = new Ork();
-				Nepratele[i].typ = "STRELEC";
-				Nepratele[i].rnd_ork();
-			}else if (rnd == 6) {
+			}else if (rnd == ELF) {
 				Nepratele[i] = new Elf();
-				Nepratele[i].typ = "RYTIR";
-				Nepratele[i].rnd_elf();
-			}else if (rnd == 7) {
-				Nepratele[i] = new Elf();
-				Nepratele[i].typ = "MAG";
-				Nepratele[i].rnd_elf();
-			}else if (rnd == 8) {
-				Nepratele[i] = new Elf();
-				Nepratele[i].typ = "STRELEC";
+				Nepratele[i].rnd_typ();
 				Nepratele[i].rnd_elf();
 			}
 		}
 		
 	}
-	
 	
 	
 	private void zmackniEnter() { 
@@ -1669,7 +329,7 @@ public class Game implements lGame{
 	        }  
 	        catch(Exception e)
 	        {
-						// TOTO je antipattern
+						
 					}  
 	 }
 	
@@ -1681,22 +341,20 @@ public class Game implements lGame{
 
 
 	private void info() {
-		// TODO toto vies vytiahnut do for cyklu ako na riadku 105
-		System.out.println("1. "+ Jednotky[0].rasa + " " +Jednotky[0].typ + " lvl "+ Jednotky[0].uroven+ "| Zivoty: " + Jednotky[0].zivoty + " Poskozeni: " + Jednotky[0].poskozeni + " Rychlost: " + Jednotky[0].rychlost +" XP:"+ Jednotky[0].zkusenosti + "/" + Jednotky[0].max_zkusenosti);
-		System.out.println("2. "+ Jednotky[1].rasa + " " +Jednotky[1].typ + " lvl "+ Jednotky[1].uroven+ "| Zivoty: " + Jednotky[1].zivoty + " Poskozeni: " + Jednotky[1].poskozeni + " Rychlost: " + Jednotky[1].rychlost +" XP:"+ Jednotky[1].zkusenosti + "/" + Jednotky[1].max_zkusenosti);
-		System.out.println("3. "+ Jednotky[2].rasa + " " +Jednotky[2].typ + " lvl "+ Jednotky[2].uroven+ "| Zivoty: " + Jednotky[2].zivoty + " Poskozeni: " + Jednotky[2].poskozeni + " Rychlost: " + Jednotky[2].rychlost +" XP:"+ Jednotky[2].zkusenosti + "/" + Jednotky[2].max_zkusenosti);
+		for(int i=0;i<3;i++) {
+			System.out.println((i+1)+". "+ Jednotky[i].rasa + " " +Jednotky[i].typ + " lvl "+ Jednotky[i].uroven+ "| Zivoty: " + Jednotky[i].zivoty + " Poskozeni: " + Jednotky[i].poskozeni + " Rychlost: " + Jednotky[i].rychlost +" XP:"+ Jednotky[i].zkusenosti + "/" + Jednotky[i].max_zkusenosti);
+		}
 		System.out.println("   Pocet diamantu: " + pocet_diamantu);
 	}
 
 
-
 	public void menu() {
-
 		System.out.println("1)inspect -> Prohlidnout sve protivniky a jejich pozice");
 		System.out.println("2)fight -> zahajit souboj!");
 		System.out.println("3)info -> vypise info o jednotkach + pocet ziskanych diamantu");
 		System.out.println("4)reorder -> zmena poradi jednotek");
 		System.out.println("5)RIP -> ukoncit hru! :(");
+		System.out.print("> ");
 	}
 	
 }

@@ -11,6 +11,10 @@ public class Jednotka {
 	Random rand = new Random();
 	Scanner keyboard = new Scanner(System.in);
 	
+	final int RYTIR = 0;
+	final int MAG = 1;
+	final int STRELEC = 2;
+	
 	int min_xp = 45;
 	int max_xp = 125;
 
@@ -39,9 +43,7 @@ public class Jednotka {
 	int rychlost_elf_max = 30;
 
 	public void zisk_xp(int delitel) {
-		this.zkusenosti = (rand.nextInt(max_xp - min_xp) + min_xp)/delitel;
-		this.zkusenosti = (rand.nextInt(max_xp - min_xp) + min_xp)/delitel;
-		this.zkusenosti = (rand.nextInt(max_xp - min_xp) + min_xp)/delitel;
+		this.zkusenosti = this.zkusenosti + ((rand.nextInt(max_xp - min_xp) + min_xp)/delitel);
 		kontrola_xp();
 	}
 	
@@ -51,59 +53,49 @@ public class Jednotka {
 	
 	
 	public void kontrola_xp() {
-//		TODO maly nitpick, vyhnut zanoreniu sa vie tak, ze znegujes podmienku a urobis takzvany "EARLY EXIT"
-		// V tomto pripade by si znegoval podmienku, v nej urobil len return, a zvysok kodu by si bol schopny dat na normalnu uroven odsadenia
-		// Dam ti priklad toho do metody prikladEarlyExit.
-		// Je to celkom drobnost, ale vie ti to zjednodusit zanorenie a zprehladnit kod
-
 		if(this.zkusenosti >= this.max_zkusenosti) {
 			this.max_zkusenosti = this.max_zkusenosti + 25;
 			this.zkusenosti = 0;
 			this.max_zivoty = this.max_zivoty + rand.nextInt(30-15)+15;
 			this.poskozeni = this.poskozeni + rand.nextInt(15-2)+2;
 			System.out.println(this.rasa+" "+this.typ+" zvysil svou uroven!");
+			this.uroven++;
 		}
 	}
-
-
-	//TODO do tejto triedy vies pridat zakladnu implementaciu rnd_jednotka(), ktoru potom v podclassach ako clovek, or a elf OVERRIDNES
-	//pomocou overridu pridelis triede novu implementaciu
+	
+	
+	public void rnd_typ() {
+		int rnd = rand.nextInt(3);
+		if (rnd == RYTIR) {
+			this.typ = "RYTIR";
+		}else if (rnd ==MAG) {
+			this.typ = "MAG";
+		}else if (rnd == STRELEC) {
+			this.typ = "STRELEC";
+		}
+	}
+	
+	
+	
 	public void rnd_clovek() {
 		this.zivoty = rand.nextInt(hp_clovek_max - hp_clovek) + hp_clovek;
 		this.poskozeni = rand.nextInt(poskozeni_clovek_max - poskozeni_clovek) + poskozeni_clovek;
 		this.rychlost = rand.nextInt(rychlost_clovek_max - rychlost_clovek) + rychlost_clovek;
+		rnd_typ();
 	}
 	 
 	public void rnd_ork() {
 		this.zivoty = rand.nextInt(hp_ork_max - hp_ork) + hp_ork;
 		this.poskozeni = rand.nextInt(poskozeni_ork_max - poskozeni_ork) + poskozeni_ork;
 		this.rychlost = rand.nextInt(rychlost_ork_max - rychlost_ork) + rychlost_ork;
+		rnd_typ();
 	}
 	
 	public void rnd_elf() {
 		this.zivoty = rand.nextInt(hp_elf_max - hp_elf) + hp_elf;
 		this.poskozeni = rand.nextInt(poskozeni_elf_max - poskozeni_elf) + poskozeni_elf;
 		this.rychlost = rand.nextInt(rychlost_elf_max - rychlost_elf) + rychlost_elf;
+		rnd_typ();
 	}
-
-	public int bezEarlyExit(int value){
-		if (value > 25){
-			value += 25;
-			value -= 5;
-			int x = value % 15;
-			return x;
-		}
-		return 0;
-	}
-
-
-	public int sEarlyExit(int value){
-		if (value <= 25){
-			return 0;
-		}
-		value += 25;
-		value -= 5;
-		int x = value % 15;
-		return x;
-	}
+	
 }
