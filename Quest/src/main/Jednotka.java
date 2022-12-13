@@ -51,6 +51,11 @@ public class Jednotka {
 	
 	
 	public void kontrola_xp() {
+//		TODO maly nitpick, vyhnut zanoreniu sa vie tak, ze znegujes podmienku a urobis takzvany "EARLY EXIT"
+		// V tomto pripade by si znegoval podmienku, v nej urobil len return, a zvysok kodu by si bol schopny dat na normalnu uroven odsadenia
+		// Dam ti priklad toho do metody prikladEarlyExit.
+		// Je to celkom drobnost, ale vie ti to zjednodusit zanorenie a zprehladnit kod
+
 		if(this.zkusenosti >= this.max_zkusenosti) {
 			this.max_zkusenosti = this.max_zkusenosti + 25;
 			this.zkusenosti = 0;
@@ -59,7 +64,10 @@ public class Jednotka {
 			System.out.println(this.rasa+" "+this.typ+" zvysil svou uroven!");
 		}
 	}
-	
+
+
+	//TODO do tejto triedy vies pridat zakladnu implementaciu rnd_jednotka(), ktoru potom v podclassach ako clovek, or a elf OVERRIDNES
+	//pomocou overridu pridelis triede novu implementaciu
 	public void rnd_clovek() {
 		this.zivoty = rand.nextInt(hp_clovek_max - hp_clovek) + hp_clovek;
 		this.poskozeni = rand.nextInt(poskozeni_clovek_max - poskozeni_clovek) + poskozeni_clovek;
@@ -77,5 +85,25 @@ public class Jednotka {
 		this.poskozeni = rand.nextInt(poskozeni_elf_max - poskozeni_elf) + poskozeni_elf;
 		this.rychlost = rand.nextInt(rychlost_elf_max - rychlost_elf) + rychlost_elf;
 	}
-	
+
+	public int bezEarlyExit(int value){
+		if (value > 25){
+			value += 25;
+			value -= 5;
+			int x = value % 15;
+			return x;
+		}
+		return 0;
+	}
+
+
+	public int sEarlyExit(int value){
+		if (value <= 25){
+			return 0;
+		}
+		value += 25;
+		value -= 5;
+		int x = value % 15;
+		return x;
+	}
 }

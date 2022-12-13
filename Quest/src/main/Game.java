@@ -65,7 +65,11 @@ public class Game implements lGame{
 			System.out.println("2) ORK    -> velke poskozeni, stredne zivotuy, pomaly! JEHO UTOKY JSOU EFEKTIVNI PROTI CLOVEK A ELF");
 			System.out.println("3) ELF    -> rychla jednotka, stredni poskozeni, malo zivotu! JEHO UTOKY JSOU EFEKTIVNI PROTI CLOVEK");
 			int cislo = keyboard.nextInt();
+
+
+			// TODO
 			if (cislo == 1) {
+				// TODO opat tu pouzivas magicke cisla, idealne si tieto konstanty pomenovat ako metode volba
 				System.out.println("Zvolen CLOVEK!");
 				Jednotky[i] = new Clovek();
 			} else if (cislo == 2) {
@@ -100,6 +104,7 @@ public class Game implements lGame{
 			System.out.println("2) MAG     -> Jeho utoky jsou efektivni proti RYTIR!");
 			System.out.println("3) STRELEC -> Jeho utoky jsou efektivni proti RYTIR!");
 			cislo = keyboard.nextInt();
+			// TODO opat tu pouzivas magicke cisla, idealne si tieto konstanty pomenovat ako metode volba
 			if (cislo == 1) {
 				Jednotky[i].typ = "RYTIR";
 				System.out.println("Zvolen RYTIR! Tva "+(i+1)+". jednotka je " + Jednotky[i].rasa + " " + Jednotky[i].typ);
@@ -133,7 +138,7 @@ public class Game implements lGame{
 	
 	private void volba() {
 		int cislo = keyboard.nextInt();
-
+		// TODO tieto konstanty si mozes vytiahnut na class level, ako atributy, aby si ich mohol znova niekde inde pouzivat
 		final int INSPECT = 1;
 		final int FIGHT = 2;
 		final int INFO = 3;
@@ -1608,6 +1613,10 @@ public class Game implements lGame{
 	private void vytvoreni_nepratel() {
 		for(int i =0;i<3;i++) {
 		int rnd = rand.nextInt(9);
+//		TODO namiesto jedneho cisla ktore reprezentuje typ a rasu na tomto mieste, si mozes napriklad vygenerovat dve cisla
+			// Prve by reprzentovalo rasu, druhe typ (rytir, mag, strelec). Druhe cislo by si dal ako argument metode .rnd_clovek(typ)
+			// A ona by uz vyvtorila cloveka so spravnym typom. usetris si tym tri dost if statementov
+			// Taktiez mozes namiesto if pouzit switch, ale to je len drobnost
 			if (rnd == 0) {
 				Nepratele[i] = new Clovek();
 				Nepratele[i].typ = "RYTIR";
@@ -1672,6 +1681,7 @@ public class Game implements lGame{
 
 
 	private void info() {
+		// TODO toto vies vytiahnut do for cyklu ako na riadku 105
 		System.out.println("1. "+ Jednotky[0].rasa + " " +Jednotky[0].typ + " lvl "+ Jednotky[0].uroven+ "| Zivoty: " + Jednotky[0].zivoty + " Poskozeni: " + Jednotky[0].poskozeni + " Rychlost: " + Jednotky[0].rychlost +" XP:"+ Jednotky[0].zkusenosti + "/" + Jednotky[0].max_zkusenosti);
 		System.out.println("2. "+ Jednotky[1].rasa + " " +Jednotky[1].typ + " lvl "+ Jednotky[1].uroven+ "| Zivoty: " + Jednotky[1].zivoty + " Poskozeni: " + Jednotky[1].poskozeni + " Rychlost: " + Jednotky[1].rychlost +" XP:"+ Jednotky[1].zkusenosti + "/" + Jednotky[1].max_zkusenosti);
 		System.out.println("3. "+ Jednotky[2].rasa + " " +Jednotky[2].typ + " lvl "+ Jednotky[2].uroven+ "| Zivoty: " + Jednotky[2].zivoty + " Poskozeni: " + Jednotky[2].poskozeni + " Rychlost: " + Jednotky[2].rychlost +" XP:"+ Jednotky[2].zkusenosti + "/" + Jednotky[2].max_zkusenosti);
