@@ -1,6 +1,6 @@
 package main;
 
-public class Zvire {
+public class Pes {
 
     private int vek;
     private int vyska;
@@ -11,13 +11,18 @@ public class Zvire {
     }
 
     public void setVek(int vek) {
-        if (vek < 0){
+        if (vek < 0) {
             return;
         }
         this.vek = vek;
     }
 
-    public int getVyska(){
+    public int getVyska() {
         return vyska;
+    }
+
+    public void makeSound(){
+        System.out.println("Haf haf");
+
     }
 }

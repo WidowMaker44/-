@@ -42,6 +42,9 @@ public class Game implements lGame{
 	public static void main(String[] args) {
 		Game g = new Game();
 		g.start();
+
+		Pes z = new Pes();
+		z.getVyska();
 		
 	}//KONEC MAINU
 
@@ -207,6 +210,11 @@ public class Game implements lGame{
 				break;
 			}
 			if(Jednotky[indexJednotky].rychlost>= Nepratele[indexNepritele].rychlost) {
+				Jednotka prvni = Jednotky[indexJednotky];
+				Jednotka druhy = Nepratele[indexNepritele];
+				normalniUtokJednotky(prvni, druhy);
+				normalniUtokJednotky(druhy, prvni);
+
 				efektivniUtokJednotky(indexJednotky, indexNepritele);
 				if(provedenUtokJednotky == false) {
 					normalniUtokJednotky(indexJednotky, indexNepritele);
@@ -251,6 +259,7 @@ public class Game implements lGame{
 	}
 	
 	private void normalniUtokJednotky(int x, int y) {
+
 		Nepratele[y].zivoty = Nepratele[y].zivoty - Jednotky[x].poskozeni;
 	}
 	
@@ -326,7 +335,7 @@ public class Game implements lGame{
 			}else if (rnd == ORK) {
 				Nepratele[i] = new Ork();
 				Nepratele[i].rnd_typ();
-				Nepratele[i].rnd_ork();
+				Nepratele[i].rnd();
 			}else if (rnd == ELF) {
 				Nepratele[i] = new Elf();
 				Nepratele[i].rnd_typ();
