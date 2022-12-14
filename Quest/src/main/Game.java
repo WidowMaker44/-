@@ -14,9 +14,9 @@ public class Game implements lGame{
 	final int ORK = 1;
 	final int ELF = 2;
 	
-	final int RYTIR = 1;
-	final int MAG = 2;
-	final int STRELEC = 3;
+	final static int RYTIR = 1;
+	final static int MAG = 2;
+	final static int STRELEC = 3;
 	
 	final int INSPECT = 1;
 	final int FIGHT = 2;
@@ -25,15 +25,11 @@ public class Game implements lGame{
 	final int KONEC = 5;
 
 
-	// TODO potrebuje mat cela trieda prehlad o indexe jednotky a nepriatela, alebo ci bol proveden utok?
-	// Nestacilo by aby to boli premenne vramci funkcie fight?
 	int indexJednotky = 0;
 	int indexNepritele = 0;
 	
-	int pocetKol = 0;
 	
-	boolean provedenUtokJednotky = false;
-	boolean provedenUtokNepritele = false;
+	
 	
 	Random rand = new Random();
 	Scanner keyboard = new Scanner(System.in);
@@ -42,9 +38,6 @@ public class Game implements lGame{
 	public static void main(String[] args) {
 		Game g = new Game();
 		g.start();
-
-		Pes z = new Pes();
-		z.getVyska();
 		
 	}//KONEC MAINU
 
@@ -184,13 +177,10 @@ public class Game implements lGame{
 	private void fight() {
 		indexJednotky = 0;
 		indexNepritele = 0;
-		pocetKol=0;
+		int pocetKol = 0;
 		while(true) {
-			System.out.println(Jednotky[indexJednotky].zivoty);
-			System.out.println(Nepratele[indexNepritele].zivoty);
-			boolean provedenUtokJednoky = false;
-			boolean provedenUtokNepritele = false;
-			System.out.println(pocetKol+". KOLO");
+			System.out.println("    "+(indexJednotky+1)+". Jednotka| HP: "+Jednotky[indexJednotky].zivoty);
+			System.out.println("    "+(indexNepritele +1)+". Nepritel| HP: "+Nepratele[indexNepritele].zivoty);
 			if(Jednotky[0].zivoty<=0 && Jednotky[1].zivoty<=0 && Jednotky[2].zivoty<=0) {
 				System.out.println("Vase jednotka je mrtva!");
 				System.out.println("PROHRAL JSI! TVE JEDNOTKY SI MUSI ODPOCINOUT!");
@@ -209,32 +199,20 @@ public class Game implements lGame{
 				pocet_diamantu++;
 				break;
 			}
+			System.out.println(pocetKol+". KOLO");
 			if(Jednotky[indexJednotky].rychlost>= Nepratele[indexNepritele].rychlost) {
-				Jednotka prvni = Jednotky[indexJednotky];
-				Jednotka druhy = Nepratele[indexNepritele];
-				normalniUtokJednotky(prvni, druhy);
-				normalniUtokJednotky(druhy, prvni);
-
-				efektivniUtokJednotky(indexJednotky, indexNepritele);
-				if(provedenUtokJednotky == false) {
-					normalniUtokJednotky(indexJednotky, indexNepritele);
-				}
+				Jednotka utocnik = Jednotky[indexJednotky];
+				Jednotka obrance = Nepratele[indexNepritele];
+				utok(utocnik, obrance);
 				kontrolaHpNepritele(indexNepritele);
-				efektivniUtokNepritele(indexNepritele, indexJednotky);
-				if(provedenUtokNepritele == false) {
-					normalniUtokNepritele(indexNepritele, indexJednotky);
-				}
+				utok(obrance, utocnik);
 				kontrolaHpJednotky(indexJednotky);
 			} else {
-				efektivniUtokNepritele(indexNepritele, indexJednotky);
-				if(provedenUtokNepritele == false) {
-					normalniUtokNepritele(indexNepritele, indexJednotky);
-				}
+				Jednotka obrance = Jednotky[indexJednotky];
+				Jednotka utocnik = Nepratele[indexNepritele];
+				utok(utocnik, obrance);
 				kontrolaHpJednotky(indexJednotky);
-				efektivniUtokJednotky(indexJednotky, indexNepritele);
-				if(provedenUtokJednotky == false) {
-					normalniUtokJednotky(indexJednotky, indexNepritele);
-				}
+				utok(obrance, utocnik);
 				kontrolaHpNepritele(indexNepritele);
 			}
 			pocetKol++;
@@ -243,41 +221,23 @@ public class Game implements lGame{
 
 
 
-	// TODO tieto nasledujuce 4 metody, vies prakticky zmestit do jednej, s tym ze namiesto indexu x, y by si predaval utociacu a "obranujucu" jednotku
-	// Idealne by bolo z toho este urobit metodu na classe jednotka, ktoru by si opat mohol overridnut v podtriedach, a napriklad pre
-	// orka, by si v tej metode ktoru ma naimplementovanu on sam nemusel kontrolovat, ci je to ork a nepriatel elf, ale stacilo by ti kontrolovat ci je nepriatel elf
-	private void efektivniUtokJednotky(int x, int y) {
-		if((Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="ELF") ||
-				(Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="CLOVEK") ||
-				(Jednotky[x].rasa == "ELF" && Nepratele[y].rasa=="CLOVEK") ||
-				(Jednotky[x].typ == "RYTIR" && Nepratele[y].typ=="MAG")||
-				(Jednotky[x].typ == "STRELEC" && Nepratele[y].typ=="RYTIR")||
-				(Jednotky[x].typ == "MAG" && Nepratele[y].typ=="RYTIR")) {
-			Nepratele[y].zivoty = (int) (Nepratele[y].zivoty - (Jednotky[x].poskozeni * 1.3));
-			provedenUtokJednotky = true;
+
+	
+	private void utok(Jednotka utocnik, Jednotka obrance) {
+		if((utocnik.rasa == "ORK" && obrance.rasa=="ELF") ||
+				(utocnik.rasa == "ORK" && obrance.rasa=="CLOVEK") ||
+				(utocnik.rasa == "ELF" && obrance.rasa=="CLOVEK") ||
+				(utocnik.typ == "RYTIR" && obrance.typ=="MAG")||
+				(utocnik.typ == "STRELEC" && obrance.typ=="RYTIR")||
+				(utocnik.typ == "MAG" && obrance.typ=="RYTIR")) {
+			obrance.zivoty = (int) (obrance.zivoty - (utocnik.poskozeni * 1.3));
+		} else {
+			obrance.zivoty = obrance.zivoty - utocnik.poskozeni;
 		}
+
+		
 	}
 	
-	private void normalniUtokJednotky(int x, int y) {
-
-		Nepratele[y].zivoty = Nepratele[y].zivoty - Jednotky[x].poskozeni;
-	}
-	
-	private void efektivniUtokNepritele(int x, int y) {
-		if((Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="ELF") ||
-				(Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="CLOVEK") ||
-				(Nepratele[x].rasa == "ELF" && Jednotky[y].rasa=="CLOVEK") ||
-				(Nepratele[x].typ == "RYTIR" && Jednotky[y].typ=="MAG")||
-				(Nepratele[x].typ == "STRELEC" && Jednotky[y].typ=="RYTIR")||
-				(Nepratele[x].typ == "MAG" && Jednotky[y].typ=="RYTIR")) {
-			Jednotky[y].zivoty = (int) (Jednotky[y].zivoty - (Nepratele[x].poskozeni * 1.3));
-			provedenUtokNepritele = true;
-		}
-	}
-
-	private void normalniUtokNepritele(int x, int y) {
-		Jednotky[y].zivoty = Jednotky[y].zivoty - Nepratele[x].poskozeni;
-	}
 
 	private void kontrolaHpJednotky(int x) {
 		if(Jednotky[x].zivoty <= 0 && x <=1 ) {
@@ -330,16 +290,13 @@ public class Game implements lGame{
 		int rnd = rand.nextInt(3);
 			if (rnd == CLOVEK) {
 				Nepratele[i] = new Clovek();
-				Nepratele[i].rnd_typ();
-				Nepratele[i].rnd_clovek();
+				Nepratele[i].rnd();
 			}else if (rnd == ORK) {
 				Nepratele[i] = new Ork();
-				Nepratele[i].rnd_typ();
 				Nepratele[i].rnd();
 			}else if (rnd == ELF) {
 				Nepratele[i] = new Elf();
-				Nepratele[i].rnd_typ();
-				Nepratele[i].rnd_elf();
+				Nepratele[i].rnd();
 			}
 		}
 		

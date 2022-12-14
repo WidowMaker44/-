@@ -7,24 +7,16 @@ import java.util.jar.JarEntry;
 
 public class Jednotka {
 
-    // TODO mozno by bolo fajn este popridavat gettre/settre, popripade aspon modifiere k tymto atributom
-    // modifier ako public/private, ktore sa pouzivaju tak isto ako pri metodach. Metody ktore pouzivas iba vramci triedy
-    // a nevolas ich z vonku, ako napriklad kontrolaXp mozu byt private.
-    // idealne by bolo ale asi pouzit gettre a settre na atributy, kedze "encapsulation", je jeden z key prvkov OOP,
-    // co znamena ze chces kontrolovat kto ma aky pristup ku ktorym atributom, a ako ich mozu modifkovat.
     String jmeno, rasa, typ;
     int zivoty, poskozeni, rychlost, zkusenosti = 0, uroven = 1, max_zkusenosti = 100, max_zivoty;
 
     Random rand = new Random();
     Scanner keyboard = new Scanner(System.in);
 
-    // TODO preco maju tieto konstanty inu hodnotu ako v game? 🤔 (prave som zistil ze tu mozem pridavat emoji hell yeah)
-    final int RYTIR = 0;
-    final int MAG = 1;
-    final int STRELEC = 2;
+ 
 
-    int min_xp = 45;
-    int max_xp = 125;
+    private int min_xp = 45;
+    private int max_xp = 125;
 
     int hp_clovek = 500;
     int hp_clovek_max = 800;
@@ -59,7 +51,7 @@ public class Jednotka {
     }
 
 
-    public void kontrola_xp() {
+    private void kontrola_xp() {
         if (this.zkusenosti < this.max_zkusenosti) {
             return;
         }
@@ -70,50 +62,35 @@ public class Jednotka {
         this.poskozeni = this.poskozeni + rand.nextInt(15 - 2) + 2;
         System.out.println(this.rasa + " " + this.typ + " zvysil svou uroven!");
         this.uroven++;
-
-
     }
 
-
     public void rnd_typ() {
-        int rnd = rand.nextInt(3);
-        if (rnd == RYTIR) {
+        int rnd = rand.nextInt(3)+1;
+        if (rnd == Game.RYTIR) {
             this.typ = "RYTIR";
-        } else if (rnd == MAG) {
+        } else if (rnd == Game.MAG) {
             this.typ = "MAG";
-        } else if (rnd == STRELEC) {
+        } else if (rnd == Game.STRELEC) {
             this.typ = "STRELEC";
         }
     }
 
     public void rnd() {
-        this.zivoty = 690;
+    	
     }
 
-    public int zautoc(Jednotka nepritel) {
-        return 1;
+  
+    
+    
+    
+    public int getMinXp() {
+        return min_xp;
     }
-
-
-    public void rnd_clovek() {
-        this.zivoty = rand.nextInt(hp_clovek_max - hp_clovek) + hp_clovek;
-        this.poskozeni = rand.nextInt(poskozeni_clovek_max - poskozeni_clovek) + poskozeni_clovek;
-        this.rychlost = rand.nextInt(rychlost_clovek_max - rychlost_clovek) + rychlost_clovek;
-        rnd_typ();
+    
+   
+    public int getMaxXp() {
+        return max_xp;
     }
-
-    public void rnd_ork() {
-        this.zivoty = rand.nextInt(hp_ork_max - hp_ork) + hp_ork;
-        this.poskozeni = rand.nextInt(poskozeni_ork_max - poskozeni_ork) + poskozeni_ork;
-        this.rychlost = rand.nextInt(rychlost_ork_max - rychlost_ork) + rychlost_ork;
-        rnd_typ();
-    }
-
-    public void rnd_elf() {
-        this.zivoty = rand.nextInt(hp_elf_max - hp_elf) + hp_elf;
-        this.poskozeni = rand.nextInt(poskozeni_elf_max - poskozeni_elf) + poskozeni_elf;
-        this.rychlost = rand.nextInt(rychlost_elf_max - rychlost_elf) + rychlost_elf;
-        rnd_typ();
-    }
-
+    
+  
 }
