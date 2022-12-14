@@ -5,12 +5,19 @@ import java.util.Scanner;
 
 
 public class Jednotka {
+
+	// TODO mozno by bolo fajn este popridavat gettre/settre, popripade aspon modifiere k tymto atributom
+	// modifier ako public/private, ktore sa pouzivaju tak isto ako pri metodach. Metody ktore pouzivas iba vramci triedy
+	// a nevolas ich z vonku, ako napriklad kontrolaXp mozu byt private.
+	// idealne by bolo ale asi pouzit gettre a settre na atributy, kedze "encapsulation", je jeden z key prvkov OOP,
+	// co znamena ze chces kontrolovat kto ma aky pristup ku ktorym atributom, a ako ich mozu modifkovat.
 	String jmeno,rasa,typ;
 	int zivoty, poskozeni, rychlost, zkusenosti = 0, uroven = 1, max_zkusenosti = 100, max_zivoty;
 	
 	Random rand = new Random();
 	Scanner keyboard = new Scanner(System.in);
-	
+
+	// TODO preco maju tieto konstanty inu hodnotu ako v game? 🤔 (prave som zistil ze tu mozem pridavat emoji hell yeah)
 	final int RYTIR = 0;
 	final int MAG = 1;
 	final int STRELEC = 2;

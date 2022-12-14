@@ -23,7 +23,10 @@ public class Game implements lGame{
 	final int INFO = 3;
 	final int REORDER = 4;
 	final int KONEC = 5;
-	
+
+
+	// TODO potrebuje mat cela trieda prehlad o indexe jednotky a nepriatela, alebo ci bol proveden utok?
+	// Nestacilo by aby to boli premenne vramci funkcie fight?
 	int indexJednotky = 0;
 	int indexNepritele = 0;
 	
@@ -231,8 +234,17 @@ public class Game implements lGame{
 	}
 
 
+
+	// TODO tieto nasledujuce 4 metody, vies prakticky zmestit do jednej, s tym ze namiesto indexu x, y by si predaval utociacu a "obranujucu" jednotku
+	// Idealne by bolo z toho este urobit metodu na classe jednotka, ktoru by si opat mohol overridnut v podtriedach, a napriklad pre
+	// orka, by si v tej metode ktoru ma naimplementovanu on sam nemusel kontrolovat, ci je to ork a nepriatel elf, ale stacilo by ti kontrolovat ci je nepriatel elf
 	private void efektivniUtokJednotky(int x, int y) {
-		if((Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="ELF") || (Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="CLOVEK") || (Jednotky[x].rasa == "ELF" && Nepratele[y].rasa=="CLOVEK") || (Jednotky[x].typ == "RYTIR" && Nepratele[y].typ=="MAG")|| (Jednotky[x].typ == "STRELEC" && Nepratele[y].typ=="RYTIR")|| (Jednotky[x].typ == "MAG" && Nepratele[y].typ=="RYTIR")) {
+		if((Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="ELF") ||
+				(Jednotky[x].rasa == "ORK" && Nepratele[y].rasa=="CLOVEK") ||
+				(Jednotky[x].rasa == "ELF" && Nepratele[y].rasa=="CLOVEK") ||
+				(Jednotky[x].typ == "RYTIR" && Nepratele[y].typ=="MAG")||
+				(Jednotky[x].typ == "STRELEC" && Nepratele[y].typ=="RYTIR")||
+				(Jednotky[x].typ == "MAG" && Nepratele[y].typ=="RYTIR")) {
 			Nepratele[y].zivoty = (int) (Nepratele[y].zivoty - (Jednotky[x].poskozeni * 1.3));
 			provedenUtokJednotky = true;
 		}
@@ -243,7 +255,12 @@ public class Game implements lGame{
 	}
 	
 	private void efektivniUtokNepritele(int x, int y) {
-		if((Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="ELF") || (Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="CLOVEK") || (Nepratele[x].rasa == "ELF" && Jednotky[y].rasa=="CLOVEK") || (Nepratele[x].typ == "RYTIR" && Jednotky[y].typ=="MAG")|| (Nepratele[x].typ == "STRELEC" && Jednotky[y].typ=="RYTIR")|| (Nepratele[x].typ == "MAG" && Jednotky[y].typ=="RYTIR")) {
+		if((Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="ELF") ||
+				(Nepratele[x].rasa == "ORK" && Jednotky[y].rasa=="CLOVEK") ||
+				(Nepratele[x].rasa == "ELF" && Jednotky[y].rasa=="CLOVEK") ||
+				(Nepratele[x].typ == "RYTIR" && Jednotky[y].typ=="MAG")||
+				(Nepratele[x].typ == "STRELEC" && Jednotky[y].typ=="RYTIR")||
+				(Nepratele[x].typ == "MAG" && Jednotky[y].typ=="RYTIR")) {
 			Jednotky[y].zivoty = (int) (Jednotky[y].zivoty - (Nepratele[x].poskozeni * 1.3));
 			provedenUtokNepritele = true;
 		}
