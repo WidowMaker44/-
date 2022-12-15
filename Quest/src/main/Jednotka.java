@@ -18,28 +18,9 @@ public class Jednotka {
     private int min_xp = 45;
     private int max_xp = 125;
 
-    int hp_clovek = 500;
-    int hp_clovek_max = 800;
-    int hp_ork = 300;
-    int hp_ork_max = 620;
-    int hp_elf = 280;
-    int hp_elf_max = 525;
-
-
-    int poskozeni_clovek = 15;
-    int poskozeni_clovek_max = 90;
-    int poskozeni_ork = 45;
-    int poskozeni_ork_max = 160;
-    int poskozeni_elf = 35;
-    int poskozeni_elf_max = 150;
-
-
-    int rychlost_clovek = 10;
-    int rychlost_clovek_max = 20;
-    int rychlost_ork = 5;
-    int rychlost_ork_max = 15;
-    int rychlost_elf = 20;
-    int rychlost_elf_max = 30;
+    
+    
+   
 
     public void zisk_xp(int delitel) {
         this.zkusenosti = this.zkusenosti + ((rand.nextInt(max_xp - min_xp) + min_xp) / delitel);

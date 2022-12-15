@@ -1,6 +1,13 @@
 package main;
 
 public class Elf extends Jednotka {
+	
+	 	int hp_elf = 280;
+	    int hp_elf_max = 525;   
+	    int poskozeni_elf = 35;
+	    int poskozeni_elf_max = 150;	    
+	    int rychlost_elf = 20;
+	    int rychlost_elf_max = 30;
 
 	public Elf() {
 		this.rasa = "ELF";

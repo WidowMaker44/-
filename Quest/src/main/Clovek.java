@@ -1,6 +1,13 @@
 package main;
 
 public class Clovek extends Jednotka {
+	
+	int hp_clovek = 500;
+    int hp_clovek_max = 800;
+    int poskozeni_clovek = 15;
+    int poskozeni_clovek_max = 90;
+    int rychlost_clovek = 10;
+    int rychlost_clovek_max = 20;
 
 	public Clovek() {
 		this.rasa = "CLOVEK";

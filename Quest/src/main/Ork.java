@@ -1,6 +1,13 @@
 package main;
 
 public class Ork extends Jednotka {
+	
+	int hp_ork = 300;
+    int hp_ork_max = 620;
+    int poskozeni_ork = 45;
+    int poskozeni_ork_max = 160;
+    int rychlost_ork = 5;
+    int rychlost_ork_max = 15;
 
 	public Ork() {
 		this.rasa = "ORK";
